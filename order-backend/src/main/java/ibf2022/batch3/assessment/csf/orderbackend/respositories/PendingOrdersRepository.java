@@ -7,8 +7,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import ibf2022.batch3.assessment.csf.orderbackend.models.PizzaOrder;
 import jakarta.json.Json;
-import jakarta.json.JsonArray;
-import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 
 public class PendingOrdersRepository {

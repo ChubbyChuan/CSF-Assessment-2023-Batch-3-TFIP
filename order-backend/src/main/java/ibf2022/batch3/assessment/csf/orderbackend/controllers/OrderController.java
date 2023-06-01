@@ -1,9 +1,7 @@
 package ibf2022.batch3.assessment.csf.orderbackend.controllers;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,15 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.service.annotation.DeleteExchange;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 
 import ibf2022.batch3.assessment.csf.orderbackend.models.PizzaOrder;
-import ibf2022.batch3.assessment.csf.orderbackend.respositories.OrdersRepository;
 import ibf2022.batch3.assessment.csf.orderbackend.services.OrderingService;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
@@ -35,7 +27,7 @@ import jakarta.json.JsonObject;
 
 @Controller
 @RequestMapping(path = "/api")
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 public class OrderController {
 
 	@Autowired
@@ -115,19 +107,6 @@ public class OrderController {
 
 		return ResponseEntity.ok(jsonString);
 
-		/*
-		 * public ResponseEntity<String> postOrder(@RequestBody MultiValueMap<String,
-		 * String> form) {
-		 * PizzaOrder pizzaOrder = new PizzaOrder();
-		 * try {
-		 * 
-		 * return ResponseEntity.ok("{}");
-		 * } catch (Exception e) {
-		 * // Handle any JSON parsing or processing errors
-		 * return ResponseEntity.badRequest().body("Invalid JSON format");
-		 * }
-		 */
-
 	}
 
 	// TODO: Task 6 - GET /api/orders/<email>
@@ -146,7 +125,7 @@ public class OrderController {
 						.add("date", dateFormat.format(order.getDate()))
 						.add("total", order.getTotal())
 						.build();
-	
+
 				jsonArrayBuilder.add(pendingOrderJs);
 			}
 			// Create a JSON response containing the order data
@@ -156,13 +135,12 @@ public class OrderController {
 			return ResponseEntity.ok(jsonResponse);
 		} catch (Exception e) {
 			// Handle any errors or exceptions
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while retrieving orders.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Error occurred while retrieving orders.");
 		}
 	}
 
-
 	// TODO: Task 7 - DELETE /api/order/<orderId>
-
 
 	@DeleteMapping(path = "/order", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -172,32 +150,18 @@ public class OrderController {
 			if (id == null || id.isEmpty()) {
 				return ResponseEntity.badRequest().body("Missing 'id' field in the request body");
 			}
-			
+
 			if (!orderSvc.markOrderDelivered(id)) {
 				return ResponseEntity.notFound().build();
 			}
-	
+
 		} catch (Exception e) {
 			// Handle any JSON parsing or processing errors
 			return ResponseEntity.badRequest().body("Invalid request");
 		}
-	
+
 		return ResponseEntity.ok("{}");
 
 	}
-		/*
-		 * public ResponseEntity<String> postOrder(@RequestBody MultiValueMap<String,
-		 * String> form) {
-		 * PizzaOrder pizzaOrder = new PizzaOrder();
-		 * try {
-		 * 
-		 * return ResponseEntity.ok("{}");
-		 * } catch (Exception e) {
-		 * // Handle any JSON parsing or processing errors
-		 * return ResponseEntity.badRequest().body("Invalid JSON format");
-		 * }
-		 */
 
-	}
-
-
+}
